@@ -1,10 +1,9 @@
 package com.services.impl;
 
-import com.dtos.DogDto;
-import com.entities.Dog;
-import com.repositories.DogRepository;
-import com.services.DogService;
-import com.mappers.DogMapper;
+import com.dtos.ArtistDto;
+import com.repositories.ArtistRepository;
+import com.services.ArtistService;
+import com.mappers.ArtistMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,12 +13,12 @@ import java.util.List;
  * Implémentation des opérations métier pour la gestion des chiens.
  * Cette classe suit le principe de Single Responsibility (SOLID).
  */
-@Service("dogService")
+@Service
 @Transactional
-public class DogServiceImpl implements DogService {
+public class ArtistServiceImpl implements ArtistService {
 
-	private final DogRepository dogRepository;
-	private final DogMapper dogMapper;
+	private final ArtistRepository artistRepository;
+	private final ArtistMapper artistMapper;
 
 	/**
 	 * Constructeur avec injection des dépendances
@@ -28,9 +27,9 @@ public class DogServiceImpl implements DogService {
 	 * - Elle facilite les tests unitaires
 	 * - Elle permet l'immutabilité
 	 */
-	public DogServiceImpl(DogRepository dogRepository, DogMapper dogMapper) {
-		this.dogRepository = dogRepository;
-		this.dogMapper = dogMapper;
+	public ArtistServiceImpl(ArtistRepository artistRepository, ArtistMapper artistMapper) {
+		this.artistRepository = artistRepository;
+		this.artistMapper = artistMapper;
 	}
 
 	/**
@@ -38,10 +37,10 @@ public class DogServiceImpl implements DogService {
 	 * Cette méthode est transactionnelle par défaut grâce à @Transactional sur la classe
 	 */
 	@Override
-	public DogDto saveDog(DogDto dogDto) {
-		var dog = dogMapper.toEntity(dogDto);
-		var savedDog = dogRepository.save(dog);
-		return dogMapper.toDto(savedDog);
+	public ArtistDto create(ArtistDto artistDto) {
+		var artist = artistMapper.toEntity(artistDto);
+		var savedArtist = artistRepository.save(artist);
+		return artistMapper.toDto(savedArtist);
 	}
 
 	/**
@@ -50,11 +49,11 @@ public class DogServiceImpl implements DogService {
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public DogDto getDogById(Long dogId) {
-		var dog = dogRepository.findById(dogId)
+	public ArtistDto getById(Long id) {
+		var artist = artistRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException(
-						String.format("Le chien avec l'ID %d n'existe pas", dogId)));
-		return dogMapper.toDto(dog);
+						String.format("L'artiste avec l'ID %d n'existe pas", id)));
+		return artistMapper.toDto(artist);
 	}
 
 	/**
@@ -62,9 +61,8 @@ public class DogServiceImpl implements DogService {
 	 * La méthode deleteById ne lève pas d'exception si l'entité n'existe pas
 	 */
 	@Override
-	public boolean deleteDog(Long dogId) {
-		dogRepository.deleteById(dogId);
-		return true;
+	public void delete(Long id) {
+		artistRepository.deleteById(id);
 	}
 
 	/**
@@ -73,9 +71,9 @@ public class DogServiceImpl implements DogService {
 	 */
 	@Override
 	@Transactional(readOnly = true)
-	public List<DogDto> getAllDogs() {
-		return dogRepository.findAll().stream()
-				.map(dogMapper::toDto)
+	public List<ArtistDto> getAll() {
+		return artistRepository.findAll().stream()
+				.map(artistMapper::toDto)
 				.toList();
 	}
 }
