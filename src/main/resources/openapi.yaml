@@ -1,9 +1,9 @@
 openapi: 3.0.3
 info:
-  title: API de Gestion des Chiens
+  title: API de Gestion des Artistes
   description: |
-    API REST permettant la gestion des chiens dans le système.
-    Cette API permet de créer, lire, mettre à jour et supprimer des informations sur les chiens.
+    API REST permettant la gestion des artistes dans le systeme.
+    Cette API permet de creer, lire, mettre a jour et supprimer des artistes.
   version: 1.0.0
   contact:
     name: Support API
@@ -11,128 +11,164 @@ info:
 
 servers:
   - url: http://localhost:8080
-    description: Serveur de développement local
+    description: Serveur de developpement local
 
 tags:
-  - name: dogs
-    description: Opérations liées à la gestion des chiens
+  - name: artistes
+    description: Operations liees a la gestion des artistes
 
 paths:
-  /dogs:
+  /api/artistes:
     get:
       tags:
-        - dogs
-      summary: Récupère tous les chiens
-      description: Retourne la liste complète des chiens enregistrés dans le système
-      operationId: getAllDogs
+        - artistes
+      summary: Recupere tous les artistes
+      description: Retourne la liste complete des artistes enregistres dans le systeme
+      operationId: getAllArtists
       responses:
         '200':
-          description: Liste des chiens récupérée avec succès
+          description: Liste des artistes recuperee avec succes
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/DogDto'
+                  $ref: '#/components/schemas/ArtistDto'
         '500':
           description: Erreur serveur interne
 
     post:
       tags:
-        - dogs
-      summary: Crée un nouveau chien
-      description: Ajoute un nouveau chien dans le système
-      operationId: createDog
+        - artistes
+      summary: Cree un nouvel artiste
+      description: Ajoute un nouvel artiste dans le systeme
+      operationId: createArtist
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DogDto'
+              $ref: '#/components/schemas/ArtistDto'
       responses:
-        '201':
-          description: Chien créé avec succès
+        '200':
+          description: Artiste cree avec succes
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DogDto'
+                $ref: '#/components/schemas/ArtistDto'
         '400':
-          description: Données invalides
+          description: Donnees invalides
         '500':
           description: Erreur serveur interne
 
-  /dogs/{id}:
+  /api/artistes/{id}:
     get:
       tags:
-        - dogs
-      summary: Récupère un chien par son ID
-      description: Retourne les détails d'un chien spécifique
-      operationId: getDogById
+        - artistes
+      summary: Recupere un artiste par son ID
+      description: Retourne les details d'un artiste specifique
+      operationId: getArtistById
       parameters:
         - name: id
           in: path
-          description: ID du chien à récupérer
+          description: ID de l'artiste a recuperer
           required: true
           schema:
             type: integer
             format: int64
       responses:
         '200':
-          description: Chien trouvé
+          description: Artiste trouve
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DogDto'
+                $ref: '#/components/schemas/ArtistDto'
         '404':
-          description: Chien non trouvé
+          description: Artiste non trouve
+        '500':
+          description: Erreur serveur interne
+
+    put:
+      tags:
+        - artistes
+      summary: Met a jour un artiste
+      description: Met a jour un artiste du systeme par son ID
+      operationId: updateArtist
+      parameters:
+        - name: id
+          in: path
+          description: ID de l'artiste a mettre a jour
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArtistDto'
+      responses:
+        '200':
+          description: Artiste mis a jour avec succes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArtistDto'
+        '400':
+          description: Donnees invalides
+        '404':
+          description: Artiste non trouve
         '500':
           description: Erreur serveur interne
 
     delete:
       tags:
-        - dogs
-      summary: Supprime un chien
-      description: Supprime un chien du système par son ID
-      operationId: deleteDog
+        - artistes
+      summary: Supprime un artiste
+      description: Supprime un artiste du systeme par son ID
+      operationId: deleteArtist
       parameters:
         - name: id
           in: path
-          description: ID du chien à supprimer
+          description: ID de l'artiste a supprimer
           required: true
           schema:
             type: integer
             format: int64
       responses:
         '200':
-          description: Chien supprimé avec succès
-          content:
-            application/json:
-              schema:
-                type: boolean
+          description: Artiste supprime avec succes
         '404':
-          description: Chien non trouvé
+          description: Artiste non trouve
         '500':
           description: Erreur serveur interne
 
 components:
   schemas:
-    DogDto:
+    ArtistDto:
       type: object
-      description: Représentation d'un chien dans le système
+      description: Representation d'un artiste dans le systeme
       properties:
         id:
           type: integer
           format: int64
-          description: Identifiant unique du chien
+          description: Identifiant unique de l'artiste
           example: 1
-        name:
+        nom:
           type: string
-          description: Nom du chien
-          example: "Rex"
-        race:
+          description: Nom de famille de l'artiste
+          example: "Dupont"
+        prenom:
           type: string
-          description: Race du chien
-          example: "Berger Allemand"
+          description: Prenom de l'artiste
+          example: "Jean"
+        age:
+          type: integer
+          format: int32
+          description: Age de l'artiste
+          example: 35
       required:
-        - name
-        - race 
+        - nom
+        - prenom
+        - age

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Contrôleur REST exposant les endpoints
+ * Controleur REST exposant les endpoints
  * relatifs aux artistes.
  *
  * <p>Base URL : <b>/api/artistes</b></p>
@@ -21,7 +21,7 @@ public class ArtistController {
     private final ArtistService service;
 
 	/**
-	 * Crée un artiste.
+	 * Cree un artiste.
 	 */
 	@PostMapping
     public ArtistDto create(@RequestBody ArtistDto dto) {
@@ -29,7 +29,7 @@ public class ArtistController {
 	}
 
 	/**
-	 * Récupère un artiste par id.
+	 * Recupere un artiste par id.
 	 */
 	@GetMapping("/{id}")
     public ArtistDto getById(@PathVariable Long id) {
@@ -37,7 +37,15 @@ public class ArtistController {
 	}
 
 	/**
-	 * Récupère tous les artistes.
+	 * Met a jour un artiste.
+	 */
+	@PutMapping("/{id}")
+	public ArtistDto update(@PathVariable Long id, @RequestBody ArtistDto dto) {
+		return service.update(id, dto);
+	}
+
+	/**
+	 * Recupere tous les artistes.
 	 */
 	@GetMapping
     public List<ArtistDto> getAll() {

@@ -67,6 +67,22 @@ public class ArtistServiceImpl implements ArtistService {
 
 	/**
 	 * {@inheritDoc}
+	 * Met a jour les champs principaux de l'artiste.
+	 */
+	@Override
+	public ArtistDto update(Long id, ArtistDto artistDto) {
+		var artist = artistRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException(
+						String.format("L'artiste avec l'ID %d n'existe pas", id)));
+		artist.setNom(artistDto.getNom());
+		artist.setPrenom(artistDto.getPrenom());
+		artist.setAge(artistDto.getAge());
+		var savedArtist = artistRepository.save(artist);
+		return artistMapper.toDto(savedArtist);
+	}
+
+	/**
+	 * {@inheritDoc}
 	 * Utilisation de l'API Stream pour une transformation fonctionnelle des données
 	 */
 	@Override

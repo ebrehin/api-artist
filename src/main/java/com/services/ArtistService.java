@@ -39,4 +39,13 @@ public interface ArtistService {
      * @param id identifiant de l'artiste
      */
     void delete(Long id);
+
+    /**
+     * Met a jour un artiste existant.
+     *
+     * @param id identifiant de l'artiste
+     * @param artisteDto donnees mises a jour
+     * @return artiste mis a jour
+     */
+    ArtistDto update(Long id, ArtistDto artisteDto);
 }
