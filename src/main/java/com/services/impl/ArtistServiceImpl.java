@@ -39,6 +39,8 @@ public class ArtistServiceImpl implements ArtistService {
 	@Override
 	public ArtistDto create(ArtistDto artistDto) {
 		var artist = artistMapper.toEntity(artistDto);
+		// Ensure a new entity is created even if the client sent an id
+		artist.setId(null);
 		var savedArtist = artistRepository.save(artist);
 		return artistMapper.toDto(savedArtist);
 	}
