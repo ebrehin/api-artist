@@ -10,7 +10,7 @@ info:
     email: support@example.com
 
 servers:
-  - url: http://localhost:8080
+  - url: http://localhost:et
     description: Serveur de developpement local
 
 tags:
