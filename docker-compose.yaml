@@ -1,7 +1,7 @@
 services:
   mariadb:
     image: mariadb:latest
-    container_name: artiste-api
+    container_name: mariadb-artist
     environment:
       MARIADB_ROOT_PASSWORD: monMotDePasseSuperSecret
       MARIADB_DATABASE: test
