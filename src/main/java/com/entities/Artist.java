@@ -19,7 +19,10 @@ import lombok.*;
  * @author
  */
 @Entity
-@Table(name = "artistes")
+@Table(
+        name = "artistes",
+        uniqueConstraints = @UniqueConstraint(name = "uk_artistes_nom_prenom", columnNames = {"nom", "prenom"})
+)
 @Data
 @Builder
 @NoArgsConstructor
