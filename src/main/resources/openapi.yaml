@@ -10,7 +10,7 @@ info:
     email: support@example.com
 
 servers:
-  - url: http://localhost:et
+  - url: http://info-tpsi.univ-brest.fr:10063
     description: Serveur de developpement local
 
 tags:
