@@ -8,6 +8,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import com.services.DuplicateArtistException;
 
 /**
  * Implémentation des opérations métier pour la gestion des chiens.
@@ -38,6 +39,10 @@ public class ArtistServiceImpl implements ArtistService {
 	 */
 	@Override
 	public ArtistDto create(ArtistDto artistDto) {
+		if (artistRepository.existsByNomIgnoreCaseAndPrenomIgnoreCase(
+				artistDto.getNom(), artistDto.getPrenom())) {
+			throw new DuplicateArtistException("Artiste deja existant pour ce nom/prenom");
+		}
 		var artist = artistMapper.toEntity(artistDto);
 		// Ensure a new entity is created even if the client sent an id
 		artist.setId(null);
@@ -76,6 +81,13 @@ public class ArtistServiceImpl implements ArtistService {
 		var artist = artistRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException(
 						String.format("L'artiste avec l'ID %d n'existe pas", id)));
+		artistRepository.findByNomIgnoreCaseAndPrenomIgnoreCase(
+						artistDto.getNom(), artistDto.getPrenom())
+				.ifPresent(existing -> {
+					if (!existing.getId().equals(id)) {
+						throw new DuplicateArtistException("Artiste deja existant pour ce nom/prenom");
+					}
+				});
 		artist.setNom(artistDto.getNom());
 		artist.setPrenom(artistDto.getPrenom());
 		artist.setAge(artistDto.getAge());
